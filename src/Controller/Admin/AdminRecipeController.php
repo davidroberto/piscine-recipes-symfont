@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Recipe;
 use App\Form\AdminRecipeType;
+use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,8 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminRecipeController extends AbstractController
 {
 
-
-    #[Route('/admin/recipe/create', 'admin_create_recipe', methods: ['GET', 'POST'])]
+    #[Route('/admin/recipes/create', 'admin_create_recipe', methods: ['GET', 'POST'])]
     public function createRecipe(Request $request, EntityManagerInterface $entityManager)
     {
         $recipe = new Recipe();
@@ -26,11 +26,11 @@ class AdminRecipeController extends AbstractController
         $adminRecipeForm->handleRequest($request);
 
         if ($adminRecipeForm->isSubmitted()) {
-            $this->addFlash('success', 'Recette enregistrée');
             $entityManager->persist($recipe);
             $entityManager->flush();
-        }
 
+            $this->addFlash('success', 'Recette enregistrée');
+        }
 
         $adminRecipeFormView = $adminRecipeForm->createView();
 
@@ -39,5 +39,18 @@ class AdminRecipeController extends AbstractController
         ]);
 
     }
+
+
+    #[Route('/admin/recipes/list', 'admin_list_recipes', methods: ['GET'])]
+    public function listRecipes(RecipeRepository $recipeRepository) {
+
+        $recipes = $recipeRepository->findAll();
+
+        return $this->render('admin/recipe/list_recipes.html.twig', [
+            'recipes' => $recipes
+        ]);
+
+    }
+
 
 }
