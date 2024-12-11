@@ -26,6 +26,7 @@ class AdminRecipeController extends AbstractController
         $adminRecipeForm->handleRequest($request);
 
         if ($adminRecipeForm->isSubmitted()) {
+            $this->addFlash('success', 'Recette enregistrée');
             $entityManager->persist($recipe);
             $entityManager->flush();
         }
