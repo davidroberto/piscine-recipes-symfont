@@ -1,0 +1,13 @@
+
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+
+    <h2>Modification d'une recette</h2>
+
+    <p>Image actuelle :</p>
+    <img width="100px" src="{{ asset('assets/uploads/' ~ recipe.image) }}" />
+
+{{ form(adminRecipeFormView) }}
+
+{% endblock body %}

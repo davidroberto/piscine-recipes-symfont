@@ -84,8 +84,43 @@ class AdminRecipeController extends AbstractController
         $this->addFlash('success', "La recette a bien été supprimée");
 
         return $this->redirectToRoute("admin_list_recipes");
+    }
 
+    #[Route('/admin/recipes/{id}/update', 'admin_update_recipe', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    public function updateRecipe(int $id, RecipeRepository $recipeRepository, Request $request, EntityManagerInterface $entityManager, ParameterBagInterface $parameterBag)
+    {
+        $recipe = $recipeRepository->find($id);
 
+        $adminRecipeForm = $this->createForm(AdminRecipeType::class, $recipe);
+
+        $adminRecipeForm->handleRequest($request);
+
+        if ($adminRecipeForm->isSubmitted()) {
+
+            $recipeImage = $adminRecipeForm->get('image')->getData();
+
+            if ($recipeImage) {
+                $imageNewName = uniqid() . '.' . $recipeImage->guessExtension();
+
+                $rootDir = $parameterBag->get('kernel.project_dir');
+                $uploadsDir = $rootDir . '/public/assets/uploads';
+                $recipeImage->move($uploadsDir, $imageNewName);
+
+                $recipe->setImage($imageNewName);
+            }
+
+            $entityManager->persist($recipe);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Recette modifiée');
+        }
+
+        $adminRecipeFormView = $adminRecipeForm->createView();
+
+        return $this->render('admin/recipe/update_recipe.html.twig', [
+            'adminRecipeFormView' => $adminRecipeFormView,
+            'recipe' => $recipe
+        ]);
     }
 
 }
