@@ -10,6 +10,7 @@
             <th>Id</th>
             <th>Nom</th>
             <th>Date de création</th>
+            <th>Image</th>
         </tr>
 
         {% for recipe in recipes %}
@@ -17,6 +18,7 @@
                 <td>{{ recipe.id }}</td>
                 <td>{{ recipe.title }}</td>
                 <td>{{ recipe.createdAt | date('d-m-Y')}}</td>
+                <td><img width="100px" src="{{ asset('assets/uploads/' ~ recipe.image) }}" /></td>
             </tr>
         {% endfor %}
     </table>
