@@ -1,0 +1,21 @@
+{% extends "public/base.html.twig" %}
+
+{% block title %}{{ recipe.title }} | Les recettes de Roberto{% endblock %}
+
+{% block body %}
+
+    <main>
+
+        <article>
+            <p>{{ recipe.title }}</p>
+
+            <img  src="{{ asset('assets/uploads/' ~ recipe.image) }}" />
+
+            <p>{{ recipe.instructions }}</p>
+
+            <p>Catégorie : {{ recipe.category.title }}</p>
+        </article>
+
+    </main>
+
+{% endblock %}

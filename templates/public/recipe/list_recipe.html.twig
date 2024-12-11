@@ -1,0 +1,21 @@
+{% extends "public/base.html.twig" %}
+
+
+{% block title %}Accueil | Les recettes de Roberto{% endblock %}
+
+{% block body %}
+
+    <main>
+
+       {% for recipe in publishedRecipes %}
+
+        <article>
+            <p>{{ recipe.title }}</p>
+
+            <img width="100px" src="{{ asset('assets/uploads/' ~ recipe.image) }}" />
+            <a href="{{ path('show_recipe', {id: recipe.id}) }}">Voir la recette</a>
+        </article>
+        {% endfor %}
+    </main>
+
+{% endblock %}
