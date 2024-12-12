@@ -3,6 +3,43 @@
 
 {% block body %}
 
-{{ form(adminRecipeFormView) }}
+{{ form_start(adminRecipeFormView) }}
+
+    <div>
+        {{ form_label(adminRecipeFormView.title) }}
+        {{ form_widget(adminRecipeFormView.title) }}
+    </div>
+
+    <div>
+        {{ form_label(adminRecipeFormView.image) }}
+        {{ form_widget(adminRecipeFormView.image) }}
+    </div>
+
+    <div>
+        {{ form_label(adminRecipeFormView.ingredients) }}
+        {{ form_widget(adminRecipeFormView.ingredients) }}
+    </div>
+
+    <div>
+        {{ form_label(adminRecipeFormView.instructions) }}
+        {{ form_widget(adminRecipeFormView.instructions) }}
+    </div>
+
+    <div>
+        {{ form_label(adminRecipeFormView.category) }}
+        {{ form_widget(adminRecipeFormView.category) }}
+    </div>
+
+    <div>
+        {{ form_label(adminRecipeFormView.isPublished) }}
+        {{ form_widget(adminRecipeFormView.isPublished) }}
+    </div>
+
+    <div>
+        {{ form_widget(adminRecipeFormView.valider) }}
+    </div>
+
+{{ form_end(adminRecipeFormView) }}
+
 
 {% endblock body %}

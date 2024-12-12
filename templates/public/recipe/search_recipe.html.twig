@@ -12,6 +12,10 @@ Recherche pour "{{ search }}" | Les recettes de Roberto
 
     <main>
 
+        {% if recipes | length == 0 %}
+            <p>Pas de résultat</p>
+        {% endif %}
+
         {% for recipe in recipes %}
 
             <article>
