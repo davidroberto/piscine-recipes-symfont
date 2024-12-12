@@ -9,6 +9,14 @@
 
     <header>
         <h1>Les recettes de Roberto</h1>
+
+        <form method="get" action="{{ path('search_recipes') }}">
+            <label>
+                <input type="text" name="search" />
+            </label>
+
+            <input type="submit" value="Rechercher">
+        </form>
     </header>
         {% block body %}{% endblock %}
     </body>
