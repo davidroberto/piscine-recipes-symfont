@@ -7,6 +7,10 @@
 
     <main>
 
+        {% if error %}
+            <div>{{ error.messageKey }}</div>
+        {% endif %}
+
 
         <form action="{{ path('login') }}" method="POST">
 
