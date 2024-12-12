@@ -17,6 +17,16 @@ class RecipeRepository extends ServiceEntityRepository
     }
 
 
-    // SELECT * FROM product WHERE product.title LIKE
 
+    public function findBySearchInTitle(string $search): array {
+
+        $queryBuilder = $this->createQueryBuilder('recipe');
+
+        $query = $queryBuilder->select('recipe')
+                    ->where('recipe.title LIKE :search')
+                    ->setParameter('search', '%' . $search .'%' )
+                    ->getQuery();
+
+        return $query->getResult();
+    }
 }

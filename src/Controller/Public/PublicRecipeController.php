@@ -39,11 +39,16 @@ class PublicRecipeController extends AbstractController
 
 
     #[Route('recipes/search', 'search_recipes', methods: ['GET'])]
-    public function searchRecipes(Request $request)
+    public function searchRecipes(Request $request, RecipeRepository $recipeRepository)
     {
         $search = $request->query->get('search');
 
-        dd($search);
+        $recipes = $recipeRepository->findBySearchInTitle($search);
+
+        return $this->render('public/recipe/search_recipe.html.twig', [
+            "recipes" => $recipes,
+            'search' => $search
+        ]);
     }
 
 }
