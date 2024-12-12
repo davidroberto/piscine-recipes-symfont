@@ -16,7 +16,7 @@ class Recipe
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Assert\NotBlank]
+
     #[Assert\Length(
         min: 5,
         max: 10,
@@ -29,7 +29,7 @@ class Recipe
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
-    #[Assert\NotBlank]
+    #[Assert\NotBlank(message: 'Ce champs ne peut être vide')]
     #[ORM\Column(length: 255)]
     private ?string $ingredients = null;
 

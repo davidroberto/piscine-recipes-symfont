@@ -10,11 +10,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class AdminRecipeController extends AbstractController
 {
     #[Route('/admin/recipes/create', 'admin_create_recipe', methods: ['GET', 'POST'])]
-    public function createRecipe(Request $request, EntityManagerInterface $entityManager, ParameterBagInterface $parameterBag)
+    public function createRecipe(ValidatorInterface $validator, Request $request, EntityManagerInterface $entityManager, ParameterBagInterface $parameterBag)
     {
         $recipe = new Recipe();
 
@@ -24,27 +25,17 @@ class AdminRecipeController extends AbstractController
 
         if ($adminRecipeForm->isSubmitted() && $adminRecipeForm->isValid()) {
 
-            // je récupère le fichier envoyé dans le champs image du formulaire
             $recipeImage = $adminRecipeForm->get('image')->getData();
 
-            // s'il y a bien une image envoyée
             if ($recipeImage) {
 
-                // je génère un nom unique pour l'image, en gardant l'extension
-                // originale (.jpeg, .png etc)
                 $imageNewName = uniqid() . '.' . $recipeImage->guessExtension();
 
-                // je récupère grâce à la classe ParameterBag, le chemin
-                // vers la racine du projet
                 $rootDir = $parameterBag->get('kernel.project_dir');
-                // je génère le chemin vers le dossier uploads (dans le dossier public)
                 $uploadsDir = $rootDir . '/public/assets/uploads';
 
-                // je déplace mon image dans le dossier uploads, en lui donnant
-                // le nom unique
                 $recipeImage->move($uploadsDir, $imageNewName);
 
-                // je stocke dans l'entité le nouveau nom de l'image
                 $recipe->setImage($imageNewName);
             }
 
