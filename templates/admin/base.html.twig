@@ -8,6 +8,13 @@
     <body>
     <header>
         <h1>Bienvenue sur l'admin</h1>
+
+        <nav>
+            <ul>
+                <li><a href="{{ path('admin_create_recipe') }}">Créer une recettes</a></li>
+                <li><a href="{{ path('admin_list_recipes') }}">Gérer des recettes</a></li>
+            </ul>
+        </nav>
     </header>
     {% for message in app.flashes('success') %}
         <section>

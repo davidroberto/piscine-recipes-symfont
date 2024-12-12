@@ -10,6 +10,13 @@
     <header>
         <h1>Les recettes de Roberto</h1>
 
+        <nav>
+            <ul>
+                <li><a href="{{ path('homepage') }}">Accueil</a></li>
+                <li><a href="{{ path('list_recipes') }}">Liste des recettes</a></li>
+            </ul>
+        </nav>
+
         <form method="get" action="{{ path('search_recipes') }}">
             <label>
                 <input type="text" name="search" />
