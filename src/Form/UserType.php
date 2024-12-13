@@ -25,7 +25,8 @@ class UserType extends AbstractType
                 'expanded' => true
             ])
             ->add('password', PasswordType::class, [
-                'mapped' => false
+                'mapped' => false,
+                'required' => false
             ])
             ->add('save', SubmitType::class)
         ;

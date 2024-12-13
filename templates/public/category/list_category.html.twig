@@ -1,0 +1,20 @@
+{% extends "public/base.html.twig" %}
+
+
+{% block title %}Accueil | Les recettes de Roberto{% endblock %}
+
+{% block body %}
+
+    <main>
+
+        {% for category in categories %}
+
+            <article>
+                <p>{{ category.title }}</p>
+
+                <a href="{{ path('show_category', {id: category.id}) }}">Voir la catégorie</a>
+            </article>
+        {% endfor %}
+    </main>
+
+{% endblock %}

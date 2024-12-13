@@ -1,0 +1,25 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+
+
+
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Actions</th>
+            </tr>
+
+            {% for category in categories %}
+                <tr>
+                    <td>{{ category.id }}</td>
+                    <td>{{ category.title }}</td>
+                    <td><a href="{{ path('admin_delete_category', {'id': category.id}) }}">Supprimer</a><a href="{{ path('admin_update_category', {'id': category.id}) }}">Modifier</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+
+
+{% endblock %}
+

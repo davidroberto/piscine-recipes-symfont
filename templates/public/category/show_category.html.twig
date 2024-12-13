@@ -1,0 +1,22 @@
+{% extends 'public/base.html.twig' %}
+
+{% block title %}
+    Catégorie
+{% endblock %}
+
+{% block body %}
+
+
+    <p>{{ category.title }}</p>
+
+
+    {% for recipe in category.recipes %}
+
+        <p>{{ recipe.title }}</p>
+
+    {% endfor %}
+
+{% endblock %}
+
+
+

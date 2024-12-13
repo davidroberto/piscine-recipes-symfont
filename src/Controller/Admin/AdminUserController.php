@@ -89,4 +89,39 @@ class AdminUserController extends AbstractController
 
         return $this->redirectToRoute('admin_list_user');
     }
+
+
+    #[Route('/admin/users/{id}/update', 'admin_update_user', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    public function updateUser(int $id, Request $request, EntityManagerInterface $entityManager, UserRepository $userRepository, UserPasswordHasherInterface $userPasswordHasher) {
+
+        $user = $userRepository->find($id);
+
+        $userForm = $this->createForm(UserType::class, $user);
+
+        $userForm->handleRequest($request);
+
+        if ($userForm->isSubmitted() && $userForm->isValid()) {
+
+            $clearNewPassword = $userForm->get('password')->getData();
+
+            if ($clearNewPassword) {
+                $hashedPassword = $userPasswordHasher->hashPassword($user, $clearNewPassword);
+
+                $user->setPassword($hashedPassword);
+            }
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Utilisateur modifié');
+        }
+
+        $userFormView = $userForm->createView();
+
+        return $this->render('admin/user/update.html.twig', [
+            'userFormView' => $userFormView
+        ]);
+
+    }
+
 }
