@@ -1,0 +1,26 @@
+
+{% extends 'admin/base.html.twig' %}
+
+{% block body %}
+
+    <h1>Liste des admins</h1>
+
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.email }}</td>
+                <td>{% for role in user.roles %}{{ role }}{% endfor %}</td>
+                <td><a href="{{ path('admin_delete_user', {id: user.id}) }}">Supprimer</a></td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock body %}

@@ -13,6 +13,8 @@
             <ul>
                 <li><a href="{{ path('admin_create_recipe') }}">Créer une recettes</a></li>
                 <li><a href="{{ path('admin_list_recipes') }}">Gérer des recettes</a></li>
+                <li><a href="{{ path('admin_create_user') }}">Créer un utilisateur</a></li>
+                <li><a href="{{ path('admin_list_user') }}">Gérer les utilisateurs</a></li>
                 <li><a href="{{ path('logout') }}">Se déconnecter</a></li>
             </ul>
         </nav>
@@ -20,6 +22,13 @@
     {% for message in app.flashes('success') %}
         <section>
             <p style="background-color: green; color: white">{{ message }}</p>
+        </section>
+    {% endfor %}
+
+
+    {% for message in app.flashes('error') %}
+        <section>
+            <p style="background-color: red; color: white">{{ message }}</p>
         </section>
     {% endfor %}
         {% block body %}{% endblock %}
