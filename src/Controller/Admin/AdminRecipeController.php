@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Recipe;
 use App\Form\AdminRecipeType;
 use App\Repository\RecipeRepository;
+use App\Service\UniqueFilenameGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -15,7 +16,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class AdminRecipeController extends AbstractController
 {
     #[Route('/admin/recipes/create', 'admin_create_recipe', methods: ['GET', 'POST'])]
-    public function createRecipe(ValidatorInterface $validator, Request $request, EntityManagerInterface $entityManager, ParameterBagInterface $parameterBag)
+    public function createRecipe(UniqueFilenameGenerator $uniqueFilenameGenerator, ValidatorInterface $validator, Request $request, EntityManagerInterface $entityManager, ParameterBagInterface $parameterBag)
     {
         $recipe = new Recipe();
 
@@ -29,7 +30,10 @@ class AdminRecipeController extends AbstractController
 
             if ($recipeImage) {
 
-                $imageNewName = uniqid() . '.' . $recipeImage->guessExtension();
+                $imageOriginalName = $recipeImage->getClientOriginalName();
+                $imageExtension = $recipeImage->guessExtension();
+
+                $imageNewName = $uniqueFilenameGenerator->generateUniqueFileName($imageOriginalName, $imageExtension);
 
                 $rootDir = $parameterBag->get('kernel.project_dir');
                 $uploadsDir = $rootDir . '/public/assets/uploads';
@@ -78,7 +82,7 @@ class AdminRecipeController extends AbstractController
     }
 
     #[Route('/admin/recipes/{id}/update', 'admin_update_recipe', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
-    public function updateRecipe(int $id, RecipeRepository $recipeRepository, Request $request, EntityManagerInterface $entityManager, ParameterBagInterface $parameterBag)
+    public function updateRecipe(int $id, UniqueFilenameGenerator $uniqueFilenameGenerator, RecipeRepository $recipeRepository, Request $request, EntityManagerInterface $entityManager, ParameterBagInterface $parameterBag)
     {
         $recipe = $recipeRepository->find($id);
 
@@ -91,7 +95,12 @@ class AdminRecipeController extends AbstractController
             $recipeImage = $adminRecipeForm->get('image')->getData();
 
             if ($recipeImage) {
-                $imageNewName = uniqid() . '.' . $recipeImage->guessExtension();
+
+                $imageOriginalName = $recipeImage->getClientOriginalName();
+                $imageExtension = $recipeImage->guessExtension();
+
+                $imageNewName = $uniqueFilenameGenerator->generateUniqueFileName($imageOriginalName, $imageExtension);
+
 
                 $rootDir = $parameterBag->get('kernel.project_dir');
                 $uploadsDir = $rootDir . '/public/assets/uploads';
@@ -113,5 +122,8 @@ class AdminRecipeController extends AbstractController
             'recipe' => $recipe
         ]);
     }
+
+
+
 
 }
